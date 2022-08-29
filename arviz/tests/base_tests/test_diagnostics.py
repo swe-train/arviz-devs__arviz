@@ -44,7 +44,12 @@ class TestDiagnostics:
 
     def test_bfmi_dataset(self):
         data = load_arviz_data("centered_eight")
-        assert bfmi(data).all()
+
+    def test_bfmi_energy_dims_swapped(self):
+        energy = load_arviz_data("centered_eight").sample_stats.energy
+        data = {'energy': energy}
+        data_swap = {'energy': energy.transpose('draw', 'chain')}
+        assert bfmi(data_swap) == bfmi(data)
 
     def test_bfmi_dataset_bad(self):
         data = load_arviz_data("centered_eight")
