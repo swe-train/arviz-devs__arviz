@@ -832,7 +832,7 @@ def _mcse_sd(ary):
     varvar = ((ary**4).mean() - evar**2) / ess
     varsd = varvar / evar / 4
     if _numba_flag:
-        mcse_sd_value = np.float(_sqrt(np.ravel(varsd), ddof=1), np.zeros(1)))
+        mcse_sd_value = np.float(_sqrt(np.ravel(varsd), ddof=1), np.zeros(1))
     else:
         mcse_sd_value = np.std(varsd, ddof=1)
     return mcse_sd_value
