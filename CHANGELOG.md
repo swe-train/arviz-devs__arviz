@@ -4,7 +4,8 @@
 
 ### New features
 
--   Added arguments `eval_points`, `rvs`, and `random_state` to `plot_ecdf` ([2316](https://github.com/arviz-devs/arviz/pull/2316))
+-   Added arguments `band_prob`, `eval_points`, `rvs`, and `random_state` to `plot_ecdf` ([2316](https://github.com/arviz-devs/arviz/pull/2316))
+-   Added rcParam `plot.band_prob` ([2316](https://github.com/arviz-devs/arviz/pull/2316))
 
 ### Maintenance and fixes
 
