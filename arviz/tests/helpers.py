@@ -661,7 +661,6 @@ def importorskip(
     ARVIZ_CI_MACHINE = running_on_ci()
     if not ARVIZ_CI_MACHINE:
         return pytest.importorskip(modname=modname, minversion=minversion, reason=reason)
-    import warnings
 
     compile(modname, "", "eval")  # to catch syntaxerrors
 
