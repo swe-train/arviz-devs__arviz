@@ -1,4 +1,5 @@
 """Posterior/Prior predictive plot."""
+
 import logging
 import warnings
 from numbers import Integral
@@ -269,11 +270,11 @@ def plot_ppc(
 
     if flatten_pp is None:
         if flatten is None:
-            flatten_pp = list(predictive_dataset.dims.keys())
+            flatten_pp = list(predictive_dataset.dims)
         else:
             flatten_pp = flatten
     if flatten is None:
-        flatten = list(observed_data.dims.keys())
+        flatten = list(observed_data.dims)
 
     if coords is None:
         coords = {}

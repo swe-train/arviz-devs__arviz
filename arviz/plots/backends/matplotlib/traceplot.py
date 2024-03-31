@@ -1,4 +1,5 @@
 """Matplotlib traceplot."""
+
 import warnings
 from itertools import cycle
 
@@ -430,7 +431,7 @@ def plot_trace(
             Line2D(
                 [], [], label=chain_id, **dealiase_sel_kwargs(legend_kwargs, chain_prop, chain_id)
             )
-            for chain_id in range(data.dims["chain"])
+            for chain_id in range(data.sizes["chain"])
         ]
         if combined:
             handles.insert(

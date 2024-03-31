@@ -8,14 +8,26 @@
 -   Added rcParam `plot.band_prob` ([2316](https://github.com/arviz-devs/arviz/pull/2316))
 
 ### Maintenance and fixes
+- Add new example data `rugby_field` and update `rugby` example data ([2322](https://github.com/arviz-devs/arviz/pull/2322))
+- Support for `pytree`s and robust to nested dictionaries. ([2291](https://github.com/arviz-devs/arviz/pull/2291))
 
--   Refactor ECDF code ([2311](https://github.com/arviz-devs/arviz/pull/2311))
+
+### Maintenance and fixes
+- Fix deprecation warnings in multiple dependencies ([2329](https://github.com/arviz-devs/arviz/pull/2329),
+  [2332](https://github.com/arviz-devs/arviz/pull/2332) and [2333](https://github.com/arviz-devs/arviz/pull/2333))
 
 ### Deprecation
 
 -   Removed arguments `values2`, `fpr`, `pointwise`, and `pit` in `plot_ecdf` ([2316](https://github.com/arviz-devs/arviz/pull/2316))
 
 ### Documentation
+
+## v0.17.1 (2024 Mar 13)
+
+### Maintenance and fixes
+- Fix deprecations introduced in latest pandas and xarray versions, and prepare for numpy 2.0 ones ([2315](https://github.com/arviz-devs/arviz/pull/2315)))
+- Refactor ECDF code ([2311](https://github.com/arviz-devs/arviz/pull/2311))
+- Fix `plot_forest` when Numba is installed ([2319](https://github.com/arviz-devs/arviz/pull/2319))
 
 ## v0.17.0 (2023 Dec 22)
 

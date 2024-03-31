@@ -1,4 +1,5 @@
 """Stats-utility functions for ArviZ."""
+
 import warnings
 from collections.abc import Sequence
 from copy import copy as _copy
@@ -134,7 +135,10 @@ def make_ufunc(
                 raise TypeError(msg)
         for idx in np.ndindex(out.shape[:n_dims_out]):
             arys_idx = [ary[idx].ravel() if ravel else ary[idx] for ary in arys]
-            out[idx] = np.asarray(func(*arys_idx, *args[n_input:], **kwargs))[index]
+            out_idx = np.asarray(func(*arys_idx, *args[n_input:], **kwargs))[index]
+            if n_dims_out is None:
+                out_idx = out_idx.item()
+            out[idx] = out_idx
         return out
 
     def _multi_ufunc(*args, out=None, out_shape=None, **kwargs):
@@ -484,7 +488,7 @@ class ELPDData(pd.Series):  # pylint: disable=too-many-ancestors
             base += "\n\nThere has been a warning during the calculation. Please check the results."
 
         if kind == "loo" and "pareto_k" in self:
-            bins = np.asarray([-np.Inf, 0.5, 0.7, 1, np.Inf])
+            bins = np.asarray([-np.inf, 0.5, 0.7, 1, np.inf])
             counts, *_ = _histogram(self.pareto_k.values, bins)
             extended = POINTWISE_LOO_FMT.format(max(4, len(str(np.max(counts)))))
             extended = extended.format(

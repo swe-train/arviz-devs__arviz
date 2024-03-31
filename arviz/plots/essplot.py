@@ -1,4 +1,5 @@
 """Plot quantile or local effective sample sizes."""
+
 import numpy as np
 import xarray as xr
 
@@ -202,8 +203,8 @@ def plot_ess(
 
     data = get_coords(convert_to_dataset(idata, group="posterior"), coords)
     var_names = _var_names(var_names, data, filter_vars)
-    n_draws = data.dims["draw"]
-    n_samples = n_draws * data.dims["chain"]
+    n_draws = data.sizes["draw"]
+    n_samples = n_draws * data.sizes["chain"]
 
     ess_tail_dataset = None
     mean_ess = None

@@ -1,4 +1,5 @@
 """Bokeh Bayesian p-value Posterior predictive plot."""
+
 import numpy as np
 from bokeh.models import BoxAnnotation
 from bokeh.models.annotations import Title
@@ -171,8 +172,13 @@ def plot_bpv(
                 ax_i.line(0, 0, legend_label=f"bpv={p_value:.2f}", alpha=0)
 
             if plot_mean:
-                ax_i.circle(
-                    obs_vals.mean(), 0, fill_color=color, line_color="black", size=markersize
+                ax_i.scatter(
+                    obs_vals.mean(),
+                    0,
+                    fill_color=color,
+                    line_color="black",
+                    size=markersize,
+                    marker="circle",
                 )
 
         _title = Title()

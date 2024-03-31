@@ -5,7 +5,8 @@ import warnings
 import numpy as np
 from scipy.fftpack import fft
 from scipy.optimize import brentq
-from scipy.signal import convolve, convolve2d, gaussian  # pylint: disable=no-name-in-module
+from scipy.signal import convolve, convolve2d
+from scipy.signal.windows import gaussian
 from scipy.sparse import coo_matrix
 from scipy.special import ive  # pylint: disable=no-name-in-module
 
@@ -231,8 +232,8 @@ def _fixed_point(t, N, k_sq, a_sq):
        Z. I. Botev, J. F. Grotowski, and D. P. Kroese.
        Ann. Statist. 38 (2010), no. 5, 2916--2957.
     """
-    k_sq = np.asfarray(k_sq, dtype=np.float64)
-    a_sq = np.asfarray(a_sq, dtype=np.float64)
+    k_sq = np.asarray(k_sq, dtype=np.float64)
+    a_sq = np.asarray(a_sq, dtype=np.float64)
 
     l = 7
     f = np.sum(np.power(k_sq, l) * a_sq * np.exp(-k_sq * np.pi**2 * t))

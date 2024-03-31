@@ -1,4 +1,5 @@
 """Bayesian p-value Posterior/Prior predictive plot."""
+
 import numpy as np
 
 from ..labels import BaseLabeller
@@ -230,11 +231,11 @@ def plot_bpv(
 
     if flatten_pp is None:
         if flatten is None:
-            flatten_pp = list(predictive_dataset.dims.keys())
+            flatten_pp = list(predictive_dataset.dims)
         else:
             flatten_pp = flatten
     if flatten is None:
-        flatten = list(observed.dims.keys())
+        flatten = list(observed.dims)
 
     if coords is None:
         coords = {}

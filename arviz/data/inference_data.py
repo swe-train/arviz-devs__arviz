@@ -9,7 +9,7 @@ from collections import OrderedDict, defaultdict
 from collections.abc import MutableMapping, Sequence
 from copy import copy as ccopy
 from copy import deepcopy
-from datetime import datetime
+import datetime
 from html import escape
 from typing import (
     TYPE_CHECKING,
@@ -64,6 +64,8 @@ SUPPORTED_GROUPS = [
     "observed_data",
     "constant_data",
     "predictions_constant_data",
+    "unconstrained_posterior",
+    "unconstrained_prior",
 ]
 
 WARMUP_TAG = "warmup_"
@@ -252,8 +254,7 @@ class InferenceData(Mapping[str, xr.Dataset]):
 
     def __iter__(self) -> Iterator[str]:
         """Iterate over groups in InferenceData object."""
-        for group in self._groups_all:
-            yield group
+        yield from self._groups_all
 
     def __contains__(self, key: object) -> bool:
         """Return True if the named item is present, and False otherwise."""
@@ -393,8 +394,10 @@ class InferenceData(Mapping[str, xr.Dataset]):
             )
 
         try:
-            with h5netcdf.File(filename, mode="r") if engine == "h5netcdf" else nc.Dataset(
-                filename, mode="r"
+            with (
+                h5netcdf.File(filename, mode="r")
+                if engine == "h5netcdf"
+                else nc.Dataset(filename, mode="r")
             ) as file_handle:
                 if base_group == "/":
                     data = file_handle
@@ -743,11 +746,11 @@ class InferenceData(Mapping[str, xr.Dataset]):
         if len(dfs) > 1:
             for group, df in dfs.items():
                 df.columns = [
-                    col
-                    if col in ("draw", "chain")
-                    else (group, *col)
-                    if isinstance(col, tuple)
-                    else (group, col)
+                    (
+                        col
+                        if col in ("draw", "chain")
+                        else (group, *col) if isinstance(col, tuple) else (group, col)
+                    )
                     for col in df.columns
                 ]
             dfs, *dfs_tail = list(dfs.values())
@@ -1474,12 +1477,12 @@ class InferenceData(Mapping[str, xr.Dataset]):
         Examples
         --------
         Add a ``log_likelihood`` group to the "rugby" example InferenceData after loading.
-        It originally doesn't have the ``log_likelihood`` group:
 
         .. jupyter-execute::
 
             import arviz as az
             idata = az.load_arviz_data("rugby")
+            del idata.log_likelihood
             idata2 = idata.copy()
             post = idata.posterior
             obs = idata.observed_data
@@ -1492,7 +1495,7 @@ class InferenceData(Mapping[str, xr.Dataset]):
 
             import numpy as np
             rng = np.random.default_rng(73)
-            ary = rng.normal(size=(post.dims["chain"], post.dims["draw"], obs.dims["match"]))
+            ary = rng.normal(size=(post.sizes["chain"], post.sizes["draw"], obs.sizes["match"]))
             idata.add_groups(
                 log_likelihood={"home_points": ary},
                 dims={"home_points": ["match"]},
@@ -1608,13 +1611,13 @@ class InferenceData(Mapping[str, xr.Dataset]):
         .. jupyter-execute::
 
             import arviz as az
-            idata = az.load_arviz_data("rugby")
+            idata = az.load_arviz_data("radon")
 
         Second InferenceData:
 
         .. jupyter-execute::
 
-            other_idata = az.load_arviz_data("radon")
+            other_idata = az.load_arviz_data("rugby")
 
         Call the ``extend`` method:
 
@@ -1917,8 +1920,7 @@ def concat(
     copy: bool = True,
     inplace: "Literal[True]",
     reset_dim: bool = True,
-) -> None:
-    ...
+) -> None: ...
 
 
 @overload
@@ -1928,8 +1930,7 @@ def concat(
     copy: bool = True,
     inplace: "Literal[False]",
     reset_dim: bool = True,
-) -> InferenceData:
-    ...
+) -> InferenceData: ...
 
 
 @overload
@@ -1940,8 +1941,7 @@ def concat(
     copy: bool = True,
     inplace: "Literal[False]",
     reset_dim: bool = True,
-) -> InferenceData:
-    ...
+) -> InferenceData: ...
 
 
 @overload
@@ -1952,8 +1952,7 @@ def concat(
     copy: bool = True,
     inplace: "Literal[True]",
     reset_dim: bool = True,
-) -> None:
-    ...
+) -> None: ...
 
 
 @overload
@@ -1964,8 +1963,7 @@ def concat(
     copy: bool = True,
     inplace: bool = False,
     reset_dim: bool = True,
-) -> Optional[InferenceData]:
-    ...
+) -> Optional[InferenceData]: ...
 
 
 # pylint: disable=protected-access, inconsistent-return-statements
@@ -2082,7 +2080,7 @@ def concat(*args, dim=None, copy=True, inplace=False, reset_dim=True):
             else:
                 return args[0]
 
-    current_time = str(datetime.now())
+    current_time = datetime.datetime.now(datetime.timezone.utc).isoformat()
     combined_attr = defaultdict(list)
     for idata in args:
         for key, val in idata.attrs.items():

@@ -1,4 +1,5 @@
 """Dictionary specific conversion code."""
+
 import warnings
 from typing import Optional
 
@@ -59,9 +60,7 @@ class DictConverter:
         self.coords = (
             coords
             if pred_coords is None
-            else pred_coords
-            if coords is None
-            else {**coords, **pred_coords}
+            else pred_coords if coords is None else {**coords, **pred_coords}
         )
         self.index_origin = index_origin
         self.coords = coords
@@ -458,3 +457,6 @@ def from_dict(
         attrs=attrs,
         **kwargs,
     ).to_inference_data()
+
+
+from_pytree = from_dict

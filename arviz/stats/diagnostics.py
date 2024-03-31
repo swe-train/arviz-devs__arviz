@@ -457,10 +457,10 @@ def ks_summary(pareto_tail_indices):
     """
     _numba_flag = Numba.numba_flag
     if _numba_flag:
-        bins = np.asarray([-np.Inf, 0.5, 0.7, 1, np.Inf])
+        bins = np.asarray([-np.inf, 0.5, 0.7, 1, np.inf])
         kcounts, *_ = _histogram(pareto_tail_indices, bins)
     else:
-        kcounts, *_ = _histogram(pareto_tail_indices, bins=[-np.Inf, 0.5, 0.7, 1, np.Inf])
+        kcounts, *_ = _histogram(pareto_tail_indices, bins=[-np.inf, 0.5, 0.7, 1, np.inf])
     kprop = kcounts / len(pareto_tail_indices) * 100
     df_k = pd.DataFrame(
         dict(_=["(good)", "(ok)", "(bad)", "(very bad)"], Count=kcounts, Pct=kprop)
@@ -836,7 +836,7 @@ def _mcse_sd(ary):
         return np.nan
     ess = _ess_sd(ary)
     if _numba_flag:
-        sd = float(_sqrt(svar(np.ravel(ary), ddof=1), np.zeros(1)))
+        sd = float(_sqrt(svar(np.ravel(ary), ddof=1), np.zeros(1)).item())
     else:
         sd = np.std(ary, ddof=1)
     fac_mcse_sd = np.sqrt(np.exp(1) * (1 - 1 / ess) ** (ess - 1) - 1)
@@ -904,7 +904,7 @@ def _mc_error(ary, batches=5, circular=False):
                 else:
                     std = stats.circstd(ary, high=np.pi, low=-np.pi)
             elif _numba_flag:
-                std = float(_sqrt(svar(ary), np.zeros(1)))
+                std = float(_sqrt(svar(ary), np.zeros(1)).item())
             else:
                 std = np.std(ary)
             return std / np.sqrt(len(ary))

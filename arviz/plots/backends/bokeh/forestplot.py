@@ -15,7 +15,6 @@ from ....rcparams import rcParams
 from ....stats import hdi
 from ....stats.density_utils import get_bins, histogram, kde
 from ....stats.diagnostics import _ess, _rhat
-from ....utils import conditional_jit
 from ...plot_utils import _scale_fig_size
 from .. import show_layout
 from . import backend_kwarg_defaults
@@ -277,7 +276,6 @@ class PlotHandler:
         """Collect labels and ticks from plotters."""
         val = self.plotters.values()
 
-        @conditional_jit(forceobj=True, nopython=False)
         def label_idxs():
             labels, idxs = [], []
             for plotter in val:
@@ -640,7 +638,7 @@ class VarHandler:
             grouped_data = [[(0, datum)] for datum in self.data]
             skip_dims = self.combine_dims.union({"chain"})
         else:
-            grouped_data = [datum.groupby("chain") for datum in self.data]
+            grouped_data = [datum.groupby("chain", squeeze=False) for datum in self.data]
             skip_dims = self.combine_dims
 
         label_dict = OrderedDict()
@@ -648,7 +646,7 @@ class VarHandler:
         for name, grouped_datum in zip(self.model_names, grouped_data):
             for _, sub_data in grouped_datum:
                 datum_iter = xarray_var_iter(
-                    sub_data,
+                    sub_data.squeeze(),
                     var_names=[self.var_name],
                     skip_dims=skip_dims,
                     reverse_selections=True,
