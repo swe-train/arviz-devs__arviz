@@ -18,7 +18,7 @@
 
 ### Deprecation
 
--   Removed arguments `values2`, `fpr`, `pointwise`, and `pit` in `plot_ecdf` ([2316](https://github.com/arviz-devs/arviz/pull/2316))
+-   Removed arguments `values2`, `fpr`, `pointwise`, `npoints`, and `pit` in `plot_ecdf` ([2316](https://github.com/arviz-devs/arviz/pull/2316))
 
 ### Documentation
 
