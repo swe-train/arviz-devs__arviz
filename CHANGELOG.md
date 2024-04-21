@@ -4,21 +4,31 @@
 
 ### New features
 
--   Added arguments `ci_prob`, `eval_points`, `rvs`, and `random_state` to `plot_ecdf` ([2316](https://github.com/arviz-devs/arviz/pull/2316))
--   Deprecated rcParam `stats.hdi_prob` and replaced with `stats.ci_prob` ([2316](https://github.com/arviz-devs/arviz/pull/2316))
+- Added arguments `ci_prob`, `eval_points`, `rvs`, and `random_state` to `plot_ecdf` ([2316](https://github.com/arviz-devs/arviz/pull/2316))
+
+### Maintenance and fixes
+
+- Fix legend overwriting issue in `plot_trace` ([2334](https://github.com/arviz-devs/arviz/pull/2334))
+
+### Deprecation
+
+- Deprecated rcParam `stats.hdi_prob` and replaced with `stats.ci_prob` ([2316](https://github.com/arviz-devs/arviz/pull/2316))
+- Removed arguments `values2`, `fpr`, `pointwise`, `npoints`, and `pit` in `plot_ecdf` ([2316](https://github.com/arviz-devs/arviz/pull/2316))
+
+### Documentation
+
+## v0.18.0 (2024 Apr 4)
+
+### New features
+
 - Add new example data `rugby_field` and update `rugby` example data ([2322](https://github.com/arviz-devs/arviz/pull/2322))
 - Support for `pytree`s and robust to nested dictionaries. ([2291](https://github.com/arviz-devs/arviz/pull/2291))
+- Add `.close` method to `InferenceData` ([2338](https://github.com/arviz-devs/arviz/pull/2338))
 
 
 ### Maintenance and fixes
 - Fix deprecation warnings in multiple dependencies ([2329](https://github.com/arviz-devs/arviz/pull/2329),
   [2332](https://github.com/arviz-devs/arviz/pull/2332) and [2333](https://github.com/arviz-devs/arviz/pull/2333))
-
-### Deprecation
-
--   Removed arguments `values2`, `fpr`, `pointwise`, `npoints`, and `pit` in `plot_ecdf` ([2316](https://github.com/arviz-devs/arviz/pull/2316))
-
-### Documentation
 
 ## v0.17.1 (2024 Mar 13)
 
